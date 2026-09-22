@@ -18,6 +18,9 @@
 
   var landscape = window.innerWidth > window.innerHeight
   var PIZZA = BASE + (landscape ? 'pizza-h.jpg' : 'pizza-v.jpg')
+  // Versión 4K (upscale Higgs). Si carga, reemplaza a la local sin que se note el cambio.
+  var PIZZA_4K = 'https://d2ol7oe51mr4n9.cloudfront.net/user_3Jb92LJaGWIxuHuPn3iLmr8dXg6/' +
+    (landscape ? '13162063-5f8c-4f7c-8c41-a0fe5bf9871b.jpg' : '15b0cdbd-baf8-4afe-aefb-76e202e941ce.jpg')
   var LOGO = BASE + 'logo.png'
 
   var css = [
@@ -78,7 +81,13 @@
     '<button class="rdi-skip" type="button">Saltar</button>'
 
   var halves = root.querySelectorAll('.rdi-half')
-  for (var i = 0; i < halves.length; i++) halves[i].style.backgroundImage = 'url("' + PIZZA + '")'
+  function setPizza(src) {
+    for (var i = 0; i < halves.length; i++) halves[i].style.backgroundImage = 'url("' + src + '")'
+  }
+  setPizza(PIZZA)
+  var hd = new Image()
+  hd.onload = function () { if (!done) setPizza(PIZZA_4K) }
+  hd.src = PIZZA_4K
 
   var q = function (s) { return root.querySelector(s) }
   var html = document.documentElement
