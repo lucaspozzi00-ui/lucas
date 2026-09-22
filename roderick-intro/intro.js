@@ -2,7 +2,7 @@
  * Roderick · animación de entrada
  * Se agrega al sitio con una sola línea dentro de <head>:
  *   <script src="/roderick-intro/intro.js"></script>
- * Tapa la página, corre la animación (~5 s) y desaparece. No modifica nada del sitio.
+ * Tapa la página, corre la animación (~5,4 s) y desaparece. No modifica nada del sitio.
  * Se muestra una vez por visita (sessionStorage). Para verla siempre: ?intro=1
  */
 (function () {
@@ -27,11 +27,8 @@
     '#rdi{position:fixed;inset:0;z-index:2147483647;overflow:hidden;background:#0c0b09;pointer-events:auto}',
     '#rdi *{box-sizing:border-box;margin:0;padding:0}',
     // pizza de fondo, nítida, con acercamiento lento
-    '#rdi .rdi-pz{position:absolute;inset:0;transform:scale(1.12);transition:transform 5s cubic-bezier(.22,.61,.36,1)}',
-    '#rdi .rdi-half{position:absolute;inset:0;background-size:cover;background-position:center;',
-    '  transition:transform 1.05s cubic-bezier(.76,0,.24,1),opacity 1.05s ease}',
-    '#rdi .rdi-a{clip-path:polygon(0 0,62% 0,38% 100%,0 100%)}',
-    '#rdi .rdi-b{clip-path:polygon(62% 0,100% 0,100% 100%,38% 100%)}',
+    '#rdi .rdi-pz{position:absolute;inset:0;transform:scale(1.12);transition:transform 3.2s cubic-bezier(.22,.61,.36,1)}',
+    '#rdi .rdi-img{position:absolute;inset:0;background-size:cover;background-position:center}',
     '#rdi .rdi-vig{position:absolute;inset:0;pointer-events:none;',
     '  background:radial-gradient(ellipse at center,rgba(12,11,9,.15) 30%,rgba(12,11,9,.75) 100%);transition:opacity .6s}',
     // telón negro que se abre al medio
@@ -43,10 +40,9 @@
     '#rdi .rdi-vline{position:absolute;left:50%;top:0;width:2px;height:100%;margin-left:-1px;',
     '  background:linear-gradient(#ecca7f,#d9a94a 50%,#8a6a2c);box-shadow:0 0 12px #d9a94a,0 0 30px rgba(217,169,74,.6);',
     '  transform:scaleY(0);transform-origin:top;transition:transform .5s cubic-bezier(.65,0,.35,1),opacity .3s}',
-    // corte diagonal
-    '#rdi svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}',
-    '#rdi .rdi-cut{clip-path:inset(0 0 100% 0);transition:clip-path .4s cubic-bezier(.7,0,.3,1),opacity .3s}',
-    '#rdi .rdi-knife{stroke:#fff;stroke-width:2;fill:none;filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 16px #d9a94a)}',
+    // velo final: el mismo que usa fondo.css, así la pizza pasa al fondo sin corte
+    '#rdi .rdi-veil{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.1s ease;',
+    '  background:linear-gradient(180deg,rgba(12,11,9,.62) 0%,rgba(12,11,9,.78) 45%,rgba(12,11,9,.88) 100%)}',
     // logo
     '#rdi .rdi-brand{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;pointer-events:none;',
     '  opacity:0;transform:scale(.94);transition:opacity .8s ease,transform 1.2s cubic-bezier(.16,1,.3,1)}',
@@ -59,7 +55,7 @@
     '  text-transform:uppercase;color:#f5efe0;background:rgba(12,11,9,.5);border:1px solid rgba(217,169,74,.5);',
     '  border-radius:999px;padding:10px 16px;cursor:pointer;pointer-events:auto}',
     '#rdi .rdi-skip:hover{background:rgba(217,169,74,.2)}',
-    '#rdi.rdi-out{opacity:0;transition:opacity .45s ease}',
+    '#rdi.rdi-out{opacity:0;transition:opacity .9s ease}',
   ].join('\n')
 
   var style = document.createElement('style')
@@ -70,19 +66,16 @@
   root.id = 'rdi'
   root.setAttribute('aria-hidden', 'true')
   root.innerHTML =
-    '<div class="rdi-pz">' +
-    '  <div class="rdi-half rdi-a"></div><div class="rdi-half rdi-b"></div>' +
-    '</div>' +
+    '<div class="rdi-pz"><div class="rdi-img"></div></div>' +
     '<div class="rdi-vig"></div>' +
-    '<svg class="rdi-cut" viewBox="0 0 100 100" preserveAspectRatio="none"><line class="rdi-knife" x1="62" y1="0" x2="38" y2="100" vector-effect="non-scaling-stroke"/></svg>' +
+    '<div class="rdi-veil"></div>' +
     '<div class="rdi-door rdi-dl"></div><div class="rdi-door rdi-dr"></div>' +
     '<div class="rdi-vline"></div>' +
     '<div class="rdi-brand"><img alt="Roderick" src="' + LOGO + '"><span class="rdi-tag">Pizza a la parrilla</span></div>' +
     '<button class="rdi-skip" type="button">Saltar</button>'
 
-  var halves = root.querySelectorAll('.rdi-half')
   function setPizza(src) {
-    for (var i = 0; i < halves.length; i++) halves[i].style.backgroundImage = 'url("' + src + '")'
+    root.querySelector('.rdi-img').style.backgroundImage = 'url("' + src + '")'
   }
   setPizza(PIZZA)
   var hd = new Image()
@@ -108,12 +101,12 @@
       root.remove()
       style.remove()
       html.style.overflow = prevOverflow
-    }, 460)
+    }, 920)
   }
   q('.rdi-skip').addEventListener('click', finish)
 
   function play() {
-    var brand = q('.rdi-brand'), vline = q('.rdi-vline'), knife = q('.rdi-cut')
+    var brand = q('.rdi-brand'), vline = q('.rdi-vline')
     // 1. logo sobre negro
     at(50, function () { brand.style.opacity = '1'; brand.style.transform = 'scale(1)' })
     // 2. línea dorada al medio
@@ -125,19 +118,14 @@
       vline.style.opacity = '0'
       q('.rdi-pz').style.transform = 'scale(1)'
     })
-    // 4. sale el logo, corte diagonal
-    at(3300, function () { brand.style.opacity = '0'; brand.style.transform = 'scale(1.04)' })
-    at(3500, function () { knife.style.clipPath = 'inset(0 0 0 0)' })
-    // 5. la pizza se parte y deja ver la página
-    at(3950, function () {
-      knife.style.opacity = '0'
+    // 4. sale el logo y la pizza pasa al fondo (se oscurece igual que el fondo de la página)
+    at(3400, function () {
+      brand.style.opacity = '0'; brand.style.transform = 'scale(1.04)'
       q('.rdi-vig').style.opacity = '0'
-      root.style.background = 'transparent'
-      halves[0].style.transform = 'translate(-30vw,10vh) rotate(-4deg)'
-      halves[1].style.transform = 'translate(30vw,-10vh) rotate(4deg)'
-      halves[0].style.opacity = halves[1].style.opacity = '0'
+      q('.rdi-veil').style.opacity = '1'
     })
-    at(5000, finish)
+    // 5. aparece la página encima de la pizza
+    at(4500, finish)
   }
 
   // Arranca cuando la foto y el logo están cargados (máximo 2,5 s de espera).
