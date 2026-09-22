@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BRAND, PIZZA_IMG } from '../brand'
+import { BRAND, LOGO_IMG, PIZZA_IMG } from '../brand'
 
 // Corte diagonal: sigue la dirección de la tabla en la foto.
 const CUT_A = 'polygon(0 0, 64% 0, 36% 100%, 0 100%)'
@@ -69,21 +69,37 @@ export default function PizzaIntro({ onDone }: { onDone: () => void }) {
 
       {/* filo del cuchillo */}
       <svg className="intro-knife pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-        <line x1="64" y1="0" x2="36" y2="100" stroke="#fff" strokeWidth="2" vectorEffect="non-scaling-stroke" style={{ filter: 'drop-shadow(0 0 6px #fff) drop-shadow(0 0 18px ' + BRAND.orange + ')' }} />
+        <line x1="64" y1="0" x2="36" y2="100" stroke={BRAND.cream} strokeWidth="2" vectorEffect="non-scaling-stroke" style={{ filter: `drop-shadow(0 0 6px ${BRAND.goldSoft}) drop-shadow(0 0 18px ${BRAND.gold})` }} />
       </svg>
 
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+      {/* velo para el logo */}
+      <div
+        className="intro-logo pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 52% 40% at 50% 48%, rgba(12,11,9,0.86), transparent 75%)',
+        }}
+      />
+
+      <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-4 px-6">
+        <img
+          src={LOGO_IMG}
+          alt=""
+          className="intro-logo w-[min(62vw,420px)]"
+          style={{ filter: `drop-shadow(0 6px 26px rgba(217,169,74,0.35))` }}
+        />
         <span
-          className="intro-word font-display text-[clamp(3rem,12vw,10rem)]"
-          style={{ color: BRAND.cream, textShadow: '0 6px 40px rgba(0,0,0,0.7)' }}
+          className="intro-word font-display text-[clamp(1.6rem,5vw,3rem)]"
+          style={{ color: BRAND.goldSoft, textShadow: '0 6px 40px rgba(0,0,0,0.7)' }}
         >
-          {BRAND.name}
+          Pizza a la parrilla
         </span>
       </div>
 
       <button
         onClick={finish}
-        className="absolute bottom-6 right-6 rounded-full border border-white/30 px-4 py-2 text-xs font-medium uppercase tracking-widest text-white/80 backdrop-blur hover:bg-white/10"
+        className="absolute bottom-6 right-6 rounded-full border px-4 py-2 text-xs font-bold uppercase tracking-widest backdrop-blur transition-colors"
+        style={{ borderColor: BRAND.line, color: BRAND.creamDim, backgroundColor: 'rgba(12,11,9,0.55)' }}
       >
         Saltar
       </button>
