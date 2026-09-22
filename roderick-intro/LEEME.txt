@@ -1,0 +1,14 @@
+ANIMACIÓN DE ENTRADA RODERICK
+
+1. Copiá la carpeta "roderick-intro" completa en la raíz de tu sitio
+   (al lado de tu index.html).
+
+2. Abrí tu index.html y pegá esta línea justo después de <head>:
+
+   <script src="/roderick-intro/intro.js"></script>
+
+3. Subí el sitio a Netlify como siempre.
+
+- La animación dura 5 segundos y tiene botón "Saltar".
+- Se ve una vez por visita. Para verla de nuevo: tusitio.netlify.app/?intro=1
+- No toca nada de tu página: al terminar se borra sola.
