@@ -1,0 +1,27 @@
+/* Roderick · pizza 4K como fondo fijo de la página.
+   Capas: velo oscuro (legibilidad) > foto 4K (Higgs) > foto local (respaldo). */
+html { background: #0c0b09; }
+body { background: transparent !important; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #0c0b09;
+  background-image:
+    linear-gradient(180deg, rgba(12,11,9,.62) 0%, rgba(12,11,9,.78) 45%, rgba(12,11,9,.88) 100%),
+    url("https://d2ol7oe51mr4n9.cloudfront.net/user_3Jb92LJaGWIxuHuPn3iLmr8dXg6/15b0cdbd-baf8-4afe-aefb-76e202e941ce.jpg"),
+    url("pizza-v.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+@media (orientation: landscape) {
+  body::before {
+    background-image:
+      linear-gradient(180deg, rgba(12,11,9,.62) 0%, rgba(12,11,9,.78) 45%, rgba(12,11,9,.88) 100%),
+      url("https://d2ol7oe51mr4n9.cloudfront.net/user_3Jb92LJaGWIxuHuPn3iLmr8dXg6/13162063-5f8c-4f7c-8c41-a0fe5bf9871b.jpg"),
+      url("pizza-h.jpg");
+  }
+}
